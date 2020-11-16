@@ -27,8 +27,7 @@ namespace fs = std::filesystem;
 
 //checks our BSOD.txt file to see if any of the filenames match with our archive of BSODS
 
-bool DoesBsodExist(const std::string filename, const std::string casearray)
-{
+bool DoesBsodExist(const std::string filename, const std::string casearray) {
 	static std::string contents;
 	static std::ifstream fin(filename);
 	getline(fin, contents, char(-1));
@@ -42,8 +41,7 @@ bool DoesBsodExist(const std::string filename, const std::string casearray)
 	return false;
 }
 
-int main()
-{
+int main() {
 	const std::string path = "C:\\Windows\\Minidump";
 	//so we can read our file
 	std::ofstream fileout;
