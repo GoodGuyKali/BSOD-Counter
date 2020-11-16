@@ -1,5 +1,5 @@
 # BSOD-Counter
-This program will keep tack of how many BSODS you've had
+This program will keep track of how many BSODS you've had
 
 This program was made for the sole purpose of keeping track of how many BSODS you have had
 This was made initially as a joke but it turned out to be a good way of tracking how many issues you have had
