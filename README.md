@@ -15,7 +15,7 @@ To get to your startup programs you press Windows Key + R
 
 Then in the run box you put : shell:startup
 
-Press enter and drag either a shortcut or the program itself into this folder
+Press enter and drag either a shortcut or the program itself into this folder that has appeared
 
 everytime your windows boots up this program will  check to see if on this boot, you had a bsod.
 
