@@ -10,10 +10,12 @@ Yet this is pointless since WinDBG is a thing and that is used for that sole pur
 instructions:
 1, compile
 2, place compiled executable inside of your startup programs
-to get to your startup programs you press Windows Key + R
-then in the run box you put : shell:startup
-press enter and drag either a shortcut or the program itself into this folder
 
+To get to your startup programs you press Windows Key + R
+
+Then in the run box you put : shell:startup
+
+Press enter and drag either a shortcut or the program itself into this folder
 
 everytime your windows boots up this program will  check to see if on this boot, you had a bsod.
 
