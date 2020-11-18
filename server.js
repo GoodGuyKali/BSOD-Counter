@@ -1,20 +1,16 @@
 const http = require('http');
 const url = require('url');
-const port = 80;
+const port = 8080;
 
-var versionNumber = "V 0.0.0.1";
+var versionNumber = "V 0.0.0.2";
 
 const fs = require('fs');
 
-const curAction        = "/curAction";
-const addAction        = "/addAction";
-const info             = "/info";
 const SelectADevice    = "/device";
-const Type             = "/selectTypeOfPersistance";
-const nonPerm          = "/nonperm";
+const newBSOD          = "/newBSOD";
 const    Perm          = "/perm";
 
-var devices_MACS            	= [];
+var devices_ID            	= [];
 var devices_NickNames         = [];
 var devices_BSODCNT           = [];
 
@@ -24,25 +20,16 @@ http.createServer((req, res) => {
     const urlObj = url.parse(req.url, true);
 
     pathN = urlObj.pathname;
-
-    console.log(pathN);
-
-    var AddAction = false;
-
-    //
-    if(!devices_MACS.includes(urlObj.query.deviceID)) {
-      devices_MACS     .push(urlObj.query.deviceID);
-      devices_NickNames.push("Unnamed");
-      devices_BSODCNT  .push(0);
-    }
-    
-//    /newBSOD?deviceID=234
-    
-    if(pathN === "/newBSOD") {
+        
+    if(pathN === newBSOD) {
+        if(!devices_ID.includes(urlObj.query.deviceID)) {
+          devices_ID     .push(urlObj.query.deviceID);
+          devices_BSODCNT  .push(0);
+        }
         if(urlObj.query.deviceID) {
-            console.log(`Client MAC: ${urlObj.query.deviceID}`);
-            var indx = devices_MACS.indexOf(`${urlObj.query.deviceID}`);
-            content = `CurJob: ${devices_NickNames[indx]}`;
+            console.log(`Client ID: ${urlObj.query.deviceID}`);
+            var indx = devices_ID.indexOf(`${urlObj.query.deviceID}`);
+            content = `CurJob: ${devices_ID[indx]}`;
             devices_BSODCNT[indx] = devices_BSODCNT[indx] + 1; 
         } else {
             content  = `Server Version: ${versionNumber}`;
@@ -55,18 +42,20 @@ http.createServer((req, res) => {
         res.write(content);
         res.end();
     }
-    else if(pathN === SelectADevice) {
-     	content += `<script>setTimeout(function(){location.reload()},${msRefreshCooldown});</script>`;
-     	        
-        var i = 0;
-        devices_MACS.forEach(r => {
-            content  += `<form action="${Type}" method="get"><input type="hidden" id="deviceID" name="deviceID" value=${r}><input type="submit" value="${r} - ${devices_NickNames[i]}"></form>`;
-            i = i + 1;
-        });
-
-        
-        res.write(content);
-        res.end();
+    else {
+      var i = 0;
+      devices_ID.forEach(e => {
+        content += `<h1>${devices_ID[i]} - ${devices_BSODCNT[i]}</h1> - <br>`;
+        i = i + 1;
+      });
+      console.log(devices_ID);
+      console.log(devices_BSODCNT);
+       
+      res.writeHead(200, {
+        'content-type': 'text/html;charset=utf-8',
+      });       
+      res.write(content);
+      res.end();
     }
 
 })
