@@ -14,10 +14,17 @@
 ///3, everytime your windows boots up this program will almost instantly check to see if this boot you had a bsod
 /// coluld make this programm run on system boot but i think that would be overkill.
 //basic includes needed for the program to run
-#include <string>
+#define CURL_STATICLIB
 #include <iostream>
-#include <filesystem>
+#include <string>
 #include <fstream>
+#include <sstream>
+#include <curl/curl.h>
+#include <stdio.h>    //printf
+#include <string.h>   //strncpy
+
+
+
 namespace fs = std::filesystem;
 
 //there are quite a few better ways of doing this
@@ -41,7 +48,32 @@ bool DoesBsodExist(const std::string filename, const std::string casearray) {
 	return false;
 }
 
+static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+	((std::string*)userp)->append((char*)contents, size * nmemb);
+	return size * nmemb;
+}
+void comToServer() {
+	CURL* curl;
+	CURLcode res;
+	std::string readBuffer;
+	curl = curl_easy_init();
+	if (curl) {
+		std::string deviceID = "ree123";
+		std::string url = "https://SimultaneousMenacingQuotient--connikiwi.repl.co/newBSOD?deviceID=" + deviceID;
+
+		std::cout << url << std::endl;
+
+		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+		std::cout << res << std::endl;
+	}
+}
 int main() {
+	comToServer();
+	/*
 	const std::string path = "C:\\Windows\\Minidump";
 	//so we can read our file
 	std::ofstream fileout;
@@ -70,5 +102,8 @@ int main() {
 	amount << BsodAmount << std::endl;
 	amount.close();
 
+	*/
+
+	
 	exit(1);
 }
